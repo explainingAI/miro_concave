@@ -2,6 +2,7 @@
 import cv2
 
 from concave import method
+from ellipse_fitting import cell
 
 
 def main():
@@ -15,4 +16,4 @@ def main():
     concave_points = method.concave_point_detector(contours[0], k=9, l_min=6, l_max=25, epsilon=0.1)
 
     # From the concave point we fit ellipses to detect the cells
-    
+    cells, cells_type = cell.find_cells(contours, concave_points, img.shape)
