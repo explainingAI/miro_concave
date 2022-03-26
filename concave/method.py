@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+""" Method for concave point detection from Miró et al. (2022)
+
+Writen by: Miquel Miró Nicolau (UIB), 2020
+
+"""
 from concave import curvature as curv
 from concave import regions, points
 
@@ -14,14 +19,13 @@ def weighted_median(data):
     curvature values. Our goal is the homogenous division in two classes of this cumulative sum.
 
     Args:
-        data:
-
+        data: Array with the curvature values.
     Returns:
 
     """
-    cumsum = np.cumsum(data)
-    search = cumsum[-1] / 2
-    distances = np.abs(cumsum - search)
+    cum_sum = np.cumsum(data)
+    search = cum_sum[-1] / 2
+    distances = np.abs(cum_sum - search)
 
     min_dist = np.argmin(distances)
     return min_dist
@@ -72,13 +76,14 @@ def concave_point_detector(contour, k: int, l_min: int, l_max: int, epsilon: flo
     threshold = int(np.percentile(curvature, 25)) + 1
     curvature_binary = regions.threshold_data(curvature, threshold)
 
+    # We check if there are at least one pixel of a region
     if curvature_binary.max() > 0:
         positions, length = regions.regions_of_interest(curvature_binary, l_min)
         positions, length = regions.refine_regions(positions, length, curvature, threshold, l_min,
                                                    l_max)
 
-        for i, seg_pos in enumerate(positions):
-            interest_point = weighted_median(curvature[seg_pos: seg_pos + length[i]])
+        for seg_pos, seg_length in zip(positions, length):
+            interest_point = weighted_median(curvature[seg_pos: seg_pos + seg_length])
             interests_points.append(interest_point)
 
     concave = points.discriminate_interest_points(interests_points, k, contour).astype(int)
