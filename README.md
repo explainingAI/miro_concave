@@ -20,4 +20,12 @@ fitting.
 
 ### Reference
 
-**UNDER REVISION**
+```
+@article{miro2020segmenting,
+  title={Segmenting overlapped cell clusters in biomedical images by concave point detection},
+  author={Mir{\'o}-Nicolau, Miquel and Moy{\`a}-Alcover, Biel and Gonz{\'a}lez-Hidalgo, Manuel and Jaume-i-Cap{\'o}, Antoni},
+  journal={arXiv preprint arXiv:2008.00997},
+  year={2020}
+}
+
+```
